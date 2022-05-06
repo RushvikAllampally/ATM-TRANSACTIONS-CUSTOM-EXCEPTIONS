@@ -1,16 +1,62 @@
 package Practice;
 import java.util.*;
+class customer{
+	
+	private String name;
+	private int cvv;
+	private int balance;
+	private int expiryYear;
+	
+	public customer(String name,int cvv,int balance,int expiryYear) {
+		this.name = name;
+		this.cvv = cvv;
+		this.balance=balance;
+		this.expiryYear= expiryYear;
+	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getCvv() {
+		return cvv;
+	}
+
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+	public int getExpiryYear() {
+		return expiryYear;
+	}
+
+	public void setExpiryYear(int expiryYear) {
+		this.expiryYear = expiryYear;
+	}
+	
+}
 public class Bank {
 
 	public static void main(String[] args){
 		// TODO Auto-generated method stub
-		Map<Integer,int[]> map = new HashMap<>();
-		map.put(38002391,new int[] {1928,2400});
-		map.put(38002394,new int[] {4928,3200});
-		map.put(34002393,new int[] {1528,2800});
-		map.put(35002392,new int[] {1968,2700});
-		map.put(33002390,new int[] {1568,200});
+		Map<Integer,customer> map = new HashMap<>();
+		map.put(38002391,new customer("Rushvik",1928,30000,2026));
+		map.put(38002394,new customer("Rocky",2587,30000,2025));
+		map.put(34002393,new customer("Reena",3698,16000,2023));
+		map.put(35002392,new customer("Samikasen",1526,8500,2024));
+		map.put(33002390,new customer("Adheera",1478,19000,2024));
 		
 		Scanner in = new Scanner(System.in);
 		
@@ -68,14 +114,13 @@ public class Bank {
 			
 			status = printMenu();
 			
-				
-			
 		}
+		
 		System.out.println("Thank you for bancking with us !!");
 		
 	}
 	
-	private static Map<Integer, int[]> depositMoney(Map<Integer, int[]> map) throws IncorrectActNumberException, inCorrectCvvException{
+	private static Map<Integer, customer> depositMoney(Map<Integer, customer> map) throws IncorrectActNumberException, inCorrectCvvException{
 		// TODO Auto-generated method stub
 		System.out.println("Enter the card number");
 		Scanner in = new Scanner(System.in);
@@ -85,16 +130,16 @@ public class Bank {
 			int amt =in.nextInt();
 			System.out.println("Enter CVV of card");
 			int cvv = in.nextInt();
-			int balance = map.get(num)[1];
-			if(map.get(num)[0] == cvv ) {
+			int balance = map.get(num).getBalance();
+			if(map.get(num).getCvv() == cvv ) {
 				balance = balance + amt;
 				System.out.println("Amount Deposited Successfully,balance is :"+ balance);
 			}else {
 				throw new inCorrectCvvException("Wrong CVV entered");
 			}
+			map.get(num).setBalance(balance);
 			
-			map.put(num,new int[]{cvv,balance});
-		
+			
 		}else {
 			throw new IncorrectActNumberException("Entered Incorrect Card Number");
 		}
@@ -102,18 +147,18 @@ public class Bank {
 		return map;
 	}
 
-	private static Map<Integer, int[]> withDrawMoney(Map<Integer, int[]> map) throws IncorrectActNumberException, inCorrectCvvException, inSufficientFundsException {
+	private static Map<Integer, customer> withDrawMoney(Map<Integer, customer> map) throws IncorrectActNumberException, inCorrectCvvException, inSufficientFundsException {
 		System.out.println("Enter the card number");
 		Scanner in = new Scanner(System.in);
 		int num = in.nextInt();
 		if(map.containsKey(num)) {
 			System.out.println("Enter CVV of card");
 			int cvv = in.nextInt();
-			int balance = map.get(num)[1];
-			if(map.get(num)[0] == cvv ) {
+			int balance = map.get(num).getBalance();
+			if(map.get(num).getCvv() == cvv ) {
 				System.out.println("enter the amount to be withdrawed");
 				int amt =in.nextInt();
-				if(amt <= map.get(num)[1]) {
+				if(amt <= map.get(num).getBalance()) {
 					System.out.println("AMOUNT WITHDRAWED, COLLECT CASH Rupees:"+ amt);
 				}else {
 					throw new inSufficientFundsException("Insufficient funds , Enter lesser amount");
@@ -124,7 +169,7 @@ public class Bank {
 				throw new inCorrectCvvException("Wrong CVV entered");
 			}
 			
-			map.put(num,new int[]{cvv,balance});
+			map.get(num).setBalance(balance);
 		
 		}else {
 			throw new IncorrectActNumberException("Entered Incorrect Card Number");
@@ -147,7 +192,7 @@ public class Bank {
 		return status;
 	}
 	
-	public static void balance(Map<Integer,int[]> map) throws IncorrectActNumberException, inCorrectCvvException {
+	public static void balance(Map<Integer, customer> map) throws IncorrectActNumberException, inCorrectCvvException {
 		
 			System.out.println("Enter the card number");
 			Scanner in = new Scanner(System.in);
@@ -155,8 +200,8 @@ public class Bank {
 			if(map.containsKey(num)) {
 				System.out.println("Enter CVV of card");
 				int cvv = in.nextInt();
-				if(map.get(num)[0] == cvv ) {
-					System.out.println(map.get(num)[1]);
+				if(map.get(num).getCvv() == cvv ) {
+					System.out.println(map.get(num).getBalance());
 				}else {
 					throw new inCorrectCvvException("Wrong CVV entered");
 				}
